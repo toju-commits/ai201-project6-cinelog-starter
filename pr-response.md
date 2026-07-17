@@ -2,7 +2,7 @@
 
 ## AI Usage
 
-I used AI as a learning and review assistant to help interpret the project requirements, understand unfamiliar code, explain Git commands, and review my reasoning. I manually ran all commands, inspected the code, made the final decisions, and verified the results.
+I used AI as a learning and review assistant to help interpret the project requirements, understand unfamiliar code, explain Git commands, and review my reasoning. I manually ran all commands, inspected the code, made the final decisions, and verified the results. For Comments 4 and 5, I used AI as a devil's advocate to identify counterarguments, including privacy concerns with public-by-default lists and the scanning benefits of alphabetical sorting. I revised my reasoning to acknowledge those tradeoffs.
 
 ## Comment 1 — Rename `save_to_watchlist`
 
@@ -48,11 +48,14 @@ Ran the new watchlist test by itself, then ran the complete test suite. The new 
 **Reviewer feedback:**  
 Explain why new watchlist entries default to `public=True`.
 
-**My decision:**
+**My decision:**  
+I chose to keep `public=True` as the default for new watchlist entries.
 
-**Reasoning:**
+**Reasoning:**  
+CineLog is described as a community film tracking app, so public watchlists support the product's social and discovery-focused purpose. Making entries visible by default allows users to discover films through friends and other community members without requiring additional setup.
 
-**Tradeoff acknowledged:**
+**Tradeoff acknowledged:**  
+Public-by-default creates a privacy risk because some users may assume their saved films are private. The interface should clearly communicate the visibility setting and provide an easy way to make entries private. If CineLog later handles more sensitive user activity, private-by-default would deserve reconsideration.
 
 ---
 
@@ -61,11 +64,14 @@ Explain why new watchlist entries default to `public=True`.
 **Reviewer feedback:**  
 Decide whether watchlists should be sorted alphabetically or by date added.
 
-**My decision:**
+**My decision:**  
+I agreed with the maintainer and changed the default sort order to newest added first.
 
-**Reasoning:**
+**Reasoning:**  
+A watchlist represents films a user recently expressed interest in watching, so recent additions are usually more immediately useful than alphabetical placement. This also makes the watchlist behavior consistent with CineLog's collection view, which already presents newer entries first.
 
-**Engagement with the reviewer's position:**
+**Engagement with the reviewer's position:**  
+The maintainer's point that users are likely to revisit recently saved films is convincing. Alphabetical sorting can make large lists easier to scan, but that need would be better served by a future search or selectable sort option rather than making alphabetical order the only default.
 
 ---
 
@@ -89,6 +95,7 @@ Rebase onto `main` after film IDs changed from integers to UUIDs.
 ### Design decisions
 
 ### How to manually test
+
 
 
 
