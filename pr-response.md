@@ -80,11 +80,14 @@ The maintainer's point that users are likely to revisit recently saved films is 
 **Reviewer feedback:**  
 Rebase onto `main` after film IDs changed from integers to UUIDs.
 
-**What conflicted:**
+**What conflicted:**  
+The rebase produced a textual conflict in `.gitignore` because both branches added similar ignore rules. After the rebase completed, testing also revealed a semantic conflict: the UUID-based `Film` and `CollectionEntry` models were preserved, but the `WatchlistEntry` model was missing.
 
-**How I resolved it:**
+**How I resolved it:**  
+I combined the ignore rules into one clean `.gitignore`. I then restored `WatchlistEntry` while adapting its `film_id` foreign key to the new UUID format using `db.String(36)`. I preserved the user and film relationships required by the watchlist feature.
 
-**How I verified it:**
+**How I verified it:**  
+I searched the codebase for stale integer-based film ID references, confirmed that `WatchlistEntry` imported successfully, and ran the complete test suite. All 6 tests passed.
 
 ---
 
