@@ -95,10 +95,18 @@ I searched the codebase for stale integer-based film ID references, confirmed th
 
 ### What the feature does
 
+This feature adds watchlists to CineLog so users can save films they want to watch later. It includes a watchlist database model, service functions, API endpoints, duplicate-entry prevention, and tests for invalid film IDs and newest-first ordering.
+
 ### Design decisions
+
+Watchlist entries remain public by default because CineLog is designed as a community film-tracking app, although the visibility setting should be clearly communicated and easy to change. Watchlists are sorted by date added, newest first, because recently saved films are generally the most immediately useful to users.
 
 ### How to manually test
 
-
-
-
+1. Install dependencies with `pip install -r requirements.txt`.
+2. Start CineLog with `python app.py`.
+3. Use a valid user UUID and film UUID.
+4. Send a POST request to `/watchlist/<user_id>/add` with JSON containing the film UUID.
+5. Send a GET request to `/watchlist/<user_id>` and confirm the saved film appears.
+6. Add multiple films and confirm the most recently added film appears first.
+7. Run `python -m pytest tests/ -v` and confirm all tests pass.
