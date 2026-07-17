@@ -10,6 +10,7 @@ from services.watchlist_service import (
     add_to_watchlist,
     get_watchlist,
     remove_from_watchlist,
+    set_watchlist_visibility,
     AlreadyInWatchlistError,
     NotInWatchlistError,
 )
@@ -29,16 +30,23 @@ def add_film(user_id):
     Add a film to a user's watchlist.
 
     Body:
-        {"film_id": "<uuid>"}
+        {"film_id": "<uuid>", "public": true}
+
+    The public field is optional and defaults to true.
     """
     data = request.get_json()
     if not data or "film_id" not in data:
         return jsonify({"error": "film_id is required"}), 400
 
+    public = data.get("public", True)
+    if not isinstance(public, bool):
+        return jsonify({"error": "public must be a boolean"}), 400
+
     try:
         entry = add_to_watchlist(
             user_id=user_id,
             film_id=data["film_id"],
+            public=public,
         )
         return jsonify(entry.to_dict()), 201
     except FilmNotFoundError as error:
@@ -62,5 +70,30 @@ def remove_film(user_id):
     try:
         remove_from_watchlist(user_id=user_id, film_id=data["film_id"])
         return jsonify({"message": "Removed from watchlist"}), 200
+    except NotInWatchlistError as error:
+        return jsonify({"error": str(error)}), 404
+
+
+@watchlist_bp.route("/<user_id>/visibility", methods=["PATCH"])
+def update_visibility(user_id):
+    """
+    Update a watchlist entry's visibility.
+
+    Body:
+        {"film_id": "<uuid>", "public": false}
+    """
+    data = request.get_json()
+    if not data or "film_id" not in data or "public" not in data:
+        return jsonify({"error": "film_id and public are required"}), 400
+    if not isinstance(data["public"], bool):
+        return jsonify({"error": "public must be a boolean"}), 400
+
+    try:
+        entry = set_watchlist_visibility(
+            user_id=user_id,
+            film_id=data["film_id"],
+            public=data["public"],
+        )
+        return jsonify(entry.to_dict()), 200
     except NotInWatchlistError as error:
         return jsonify({"error": str(error)}), 404
