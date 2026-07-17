@@ -9,9 +9,11 @@ I used AI as a learning and review assistant to help interpret the project requi
 **Reviewer feedback:**  
 Rename `save_to_watchlist()` to `add_to_watchlist()` so it follows CineLog's `verb_to_noun` naming convention.
 
-**What I did:**
+**What I did:**  
+Renamed `save_to_watchlist()` to `add_to_watchlist()` in the service definition, route import, and route call so the function follows CineLog's `verb_to_noun` convention.
 
-**How I verified it:**
+**How I verified it:**  
+Searched the repository to confirm no references to `save_to_watchlist()` remained, confirmed the watchlist route imported successfully, and ran the full test suite. All 4 existing tests passed.
 
 ---
 
@@ -83,3 +85,4 @@ Rebase onto `main` after film IDs changed from integers to UUIDs.
 ### Design decisions
 
 ### How to manually test
+
