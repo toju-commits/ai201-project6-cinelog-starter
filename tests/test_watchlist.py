@@ -1,5 +1,5 @@
 """
-Tests for the watchlist service.
+Tests for the watchlist service and endpoints.
 """
 
 from datetime import datetime, timezone
@@ -13,6 +13,7 @@ from services.watchlist_service import (
     add_to_watchlist,
     get_watchlist,
     remove_from_watchlist,
+    set_watchlist_visibility,
     NotInWatchlistError,
 )
 
@@ -30,6 +31,12 @@ def app():
         yield app
         db.session.remove()
         db.drop_all()
+
+
+@pytest.fixture
+def client(app):
+    """Create a Flask test client."""
+    return app.test_client()
 
 
 @pytest.fixture
@@ -102,3 +109,43 @@ def test_remove_from_watchlist_missing_raises(app, sample_user, sample_film):
     with app.app_context():
         with pytest.raises(NotInWatchlistError):
             remove_from_watchlist(sample_user, sample_film)
+
+
+def test_add_to_watchlist_accepts_private_visibility(
+    app, sample_user, sample_film
+):
+    """Callers may explicitly create a private watchlist entry."""
+    with app.app_context():
+        entry = add_to_watchlist(
+            sample_user,
+            sample_film,
+            public=False,
+        )
+        assert entry.public is False
+
+
+def test_set_watchlist_visibility_updates_entry(
+    app, sample_user, sample_film
+):
+    """Visibility updates should persist on the existing entry."""
+    with app.app_context():
+        add_to_watchlist(sample_user, sample_film)
+        entry = set_watchlist_visibility(
+            sample_user,
+            sample_film,
+            public=False,
+        )
+        assert entry.public is False
+
+
+def test_visibility_endpoint_rejects_non_boolean(
+    client, sample_user, sample_film
+):
+    """The visibility endpoint should reject ambiguous string values."""
+    response = client.patch(
+        f"/watchlist/{sample_user}/visibility",
+        json={"film_id": sample_film, "public": "false"},
+    )
+
+    assert response.status_code == 400
+    assert response.get_json()["error"] == "public must be a boolean"
