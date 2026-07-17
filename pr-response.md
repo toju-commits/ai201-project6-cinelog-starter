@@ -22,9 +22,11 @@ Searched the repository to confirm no references to `save_to_watchlist()` remain
 **Reviewer feedback:**  
 Prevent a user from adding the same film to their watchlist multiple times.
 
-**What I did:**
+**What I did:**  
+Added an `AlreadyInWatchlistError` exception and checked for an existing `WatchlistEntry` with the same `user_id` and `film_id` before creating a new entry.
 
-**How I verified it:**
+**How I verified it:**  
+Confirmed the updated service imports successfully, checked the diff for unintended changes, and ran the full existing test suite. All 4 tests passed.
 
 ---
 
@@ -85,4 +87,5 @@ Rebase onto `main` after film IDs changed from integers to UUIDs.
 ### Design decisions
 
 ### How to manually test
+
 
