@@ -35,9 +35,11 @@ Confirmed the updated service imports successfully, checked the diff for uninten
 **Reviewer feedback:**  
 Add a test proving that adding a nonexistent film raises `FilmNotFoundError`.
 
-**What I did:**
+**What I did:**  
+Created `tests/test_watchlist.py` with an isolated in-memory database and added `test_add_to_watchlist_nonexistent_film_raises`. The test passes a valid-looking UUID that is not stored in the database and expects `FilmNotFoundError`.
 
-**How I verified it:**
+**How I verified it:**  
+Ran the new watchlist test by itself, then ran the complete test suite. The new test passed and all 5 tests passed together.
 
 ---
 
@@ -87,5 +89,6 @@ Rebase onto `main` after film IDs changed from integers to UUIDs.
 ### Design decisions
 
 ### How to manually test
+
 
 
