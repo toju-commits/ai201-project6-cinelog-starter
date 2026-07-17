@@ -1,4 +1,4 @@
-# PR Response Doc — CineLog Watchlist Feature
+﻿# PR Response Doc — CineLog Watchlist Feature
 
 ## AI Usage
 
@@ -178,4 +178,10 @@ This PR adds watchlists to CineLog so users can save films they want to watch la
 
 ### Submission evidence
 
-The setup screenshot and final commit-history screenshot are submitted separately through the course portal. They are intentionally not committed as binary repository artifacts because they are grading evidence rather than application source code.
+#### Environment and branch setup
+
+![Setup evidence](evidence/setup-evidence.png)
+
+#### Final linear commit history
+
+![Final commit history](evidence/final-commit-history.png)
